@@ -55,12 +55,13 @@ function median() {
     return a - b;
   });
   let med = 0;
-  if(array.length%2===0){
-    med=(array[array.length/2]+array[array.length/2-1])/2;
-}
-else{
-    med=array[Math.floor(array.length/2)];
-}
+  if (array.length % 2 === 0) {
+    med = (array[array.length / 2] + array[array.length / 2 - 1]) / 2;
+  }
+  else {
+    med = array[Math.floor(array.length / 2)];
+  }
+  return med;
 }
 
 function maxmin() {
@@ -158,151 +159,142 @@ function main() {
 main();
 
 function getCountsArray() {
-    var a = [],b = [],prev;
-    let arr = read();
-    arr.sort();
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i] !== prev) {
-            a.push(arr[i]);
-            b.push(1);
-        } else {
-            b[b.length - 1]++;
-        }
-        prev = arr[i];
-    }
-
-    const data = [];
-    for(var i = 0; i < a.length; i++)
-    {
-      data.push([a[i], b[i]]);
-    }
-    return data;
-}
-
-function getCountsArrayRelative() {
-  var a = [],b = [],prev;
+  var a = [], b = [], prev;
   let arr = read();
   arr.sort();
   for (var i = 0; i < arr.length; i++) {
-      if (arr[i] !== prev) {
-          a.push(arr[i]);
-          b.push(1);
-      } else {
-          b[b.length - 1]++;
-      }
-      prev = arr[i];
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
+  }
+
+  const data = [];
+  for (var i = 0; i < a.length; i++) {
+    data.push([a[i], b[i]]);
+  }
+  return data;
+}
+
+function getCountsArrayRelative() {
+  var a = [], b = [], prev;
+  let arr = read();
+  arr.sort();
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
   }
 
   const data = [];
   let sum = 0;
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     sum = sum + b[i];
   }
 
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     b[i] = b[i] / sum;
   }
 
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     data.push([a[i], b[i]]);
   }
   return data;
 }
 
 function getCountsArrayCumulative() {
-  var a = [],b = [],prev;
+  var a = [], b = [], prev;
   let arr = read();
   arr.sort();
   for (var i = 0; i < arr.length; i++) {
-      if (arr[i] !== prev) {
-          a.push(arr[i]);
-          b.push(1);
-      } else {
-          b[b.length - 1]++;
-      }
-      prev = arr[i];
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
   }
 
-  for(var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i-1];
+  for (var i = 1; i < b.length; i++) {
+    b[i] = b[i] + b[i - 1];
   }
 
   const data = [];
-  for(var i = 0; i < a.length; i++)
-  {
+  for (var i = 0; i < a.length; i++) {
     data.push([a[i], b[i]]);
   }
   return data;
 }
 
 function getCountsArrayCumRelative() {
-  var a = [],b = [],prev;
+  var a = [], b = [], prev;
   let arr = read();
   arr.sort();
   for (var i = 0; i < arr.length; i++) {
-      if (arr[i] !== prev) {
-          a.push(arr[i]);
-          b.push(1);
-      } else {
-          b[b.length - 1]++;
-      }
-      prev = arr[i];
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
   }
 
   const data = [];
   let sum = 0;
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     sum = sum + b[i];
   }
 
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     b[i] = b[i] / sum;
   }
 
-  for(var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i-1];
+  for (var i = 1; i < b.length; i++) {
+    b[i] = b[i] + b[i - 1];
   }
 
-  for(var i = 0; i < b.length; i++)
-  {
+  for (var i = 0; i < b.length; i++) {
     data.push([a[i], b[i]]);
   }
   return data;
 }
 
 function getCountsEmpiric() {
-  var a = [],b = [],prev;
+  var a = [], b = [], prev;
   let arr = read();
   arr.sort();
   for (var i = 0; i < arr.length; i++) {
-      if (arr[i] !== prev) {
-          a.push(arr[i]);
-          b.push(1);
-      } else {
-          b[b.length - 1]++;
-      }
-      prev = arr[i];
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
   }
 
-  for(var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i-1];
+  for (var i = 1; i < b.length; i++) {
+    b[i] = b[i] + b[i - 1];
   }
 
   let Narr = read();
   let N = Narr.length;
 
-  for(var i = 1; i < b.length; i++) {
-    b[i] = (b[i]/N);
+  for (var i = 1; i < b.length; i++) {
+    b[i] = (b[i] / N);
   }
   b[0] = 0;
   const data = [];
-  for(var i = 0; i < a.length; i++)
-  {
+  for (var i = 0; i < a.length; i++) {
     data.push([a[i], b[i]]);
   }
   return data;
@@ -327,9 +319,9 @@ function drawPoligon() {
     curveType: 'line',
     legend: { position: 'right' },
     vAxis: {
-      viewWindow:{
+      viewWindow: {
         min: 0
-    }
+      }
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Poligon'));
@@ -348,9 +340,9 @@ function drawPolRelative() {
     title: 'Полігон відносних частот',
     curveType: 'line',
     vAxis: {
-      viewWindow:{
+      viewWindow: {
         min: 0
-    }
+      }
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Poligon_relative'));
@@ -369,9 +361,9 @@ function drawCum() {
     title: 'Кумулятивна крива(нагромаджені частоти)',
     curveType: 'line',
     vAxis: {
-      viewWindow:{
+      viewWindow: {
         min: 0
-    }
+      }
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Cumulative_basic'));
@@ -390,9 +382,9 @@ function drawCumRelative() {
     title: 'Кумулятивна крива(нагромаджені відносні частоти)',
     curveType: 'line',
     vAxis: {
-      viewWindow:{
+      viewWindow: {
         min: 0
-    }
+      }
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Cumulative_relative'));
@@ -411,9 +403,9 @@ function drawEmpiric() {
     title: 'Емпірична функція',
     curveType: 'line',
     vAxis: {
-      viewWindow:{
+      viewWindow: {
         min: 0
-    }
+      }
     }
   };
   var chart = new google.visualization.SteppedAreaChart(document.getElementById('Empiric'));
