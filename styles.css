@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Asap:400,700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #292c34;
+}
+
+.inputtext {
+  width: 40px;
+}
+
+header {
+  background: white;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+header > h1 {
+  color: #24272e;
+  text-align: center;
+  font-family: 'Asap', sans-serif;
+}
+
+.maintext {
+  color: #ffffff;
+  text-align: left;
+  font-family: 'Asap', sans-serif;
+  margin-left: 0.3em;
+  margin-top: 0.3em;
+}
+
+/* table.table-bordered{
+  border:1px solid rgb(255, 255, 255);
+  margin-top:20px;
+}
+table.table-bordered > thead > tr > th{
+  border:1px solid rgb(255, 255, 255);
+}
+
+table.table-bordered > thead > tr{
+  border:1px solid rgb(255, 255, 255);
+}
+
+table.table-bordered > tbody > tr > td{
+  border:1px solid rgb(255, 255, 255);
+}
+ */
+.xtable {
+  text-align: justify;
+  padding: 0.2em;
+}
+
+.graph {
+  margin: 0%;
+  width: 50%;
+  border: ;
+}
+
+#table_buttons {
+  margin-left: 0.3em;
+}
+
+.buttonb {
+  margin-left: 0.3em;
+}
+
+.tablecont {
+  margin-right: 6em;
+  margin-top: 0.5em;
+  margin-left: 0.3em;
+  text-align: left;
+}

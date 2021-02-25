@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Лабораторна 1</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+  <header id="headerblock">
+    <h1>Лабораторна 1</h1>
+  </header>
+
+  <div class="xtable table-responsive">
+    <table contenteditable="true" id="dataTable" class="table table-bordered table-dark">
+      <tr id="zero">
+        <th>X<sub>i</sub></th>
+        <td>0.38</td>
+        <td>0.37</td>
+        <td>0.38</td>
+        <td>0.36</td>
+        <td>0.40</td>
+        <td>0.36</td>
+        <td>0.48</td>
+        <td>0.32</td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="table_buttons">
+    <span id="addbtn">
+      <button type="button" class="btn btn-success">Додати</button>
+    </span>
+    <span id="removebtn">
+      <button type="button" class="btn btn-danger buttonb">Видалити</button>
+    </span>
+    <span id="donebtn">
+      <button type="button" class="btn btn-warning buttonb">Обчислити</button>
+    </span>
+  </div>
+
+  <div class="maintext">
+    <span>Середнє статистичне: </span><span id="average"></span>
+  </div>
+  <div class="maintext">
+    <span>Мода: </span><span id="mode"></span>
+  </div>
+  <div class="maintext">
+    <span>Медіана: </span><span id="median"></span>
+  </div>
+  <div class="maintext">
+    <span>Розмах: </span><span id="minmax"></span>
+  </div>
+  <div class="maintext">
+    <span>Дисперсія: </span><span id="disp"></span>
+  </div>
+  <div class="maintext">
+    <span>Середнє квадратичне: </span><span id="AvgSquare"></span>
+  </div>
+  <div class="maintext">
+    <span>Виправлена дисперсія: </span><span id="truedisp"></span>
+  </div>
+  <div class="maintext">
+    <span>Виправлене середнє квадратичне: </span><span id="trueAvgSquare"></span>
+  </div>
+  <div class="maintext">
+    <span>Варіація: </span><span id="variation"></span>
+  </div>
+  <div class="maintext">
+    <span>Початковий момент </span><input class="inputtext" type="text" value="2" id="startorder" /><span>
+      порядку:</span><span id="startmoment"></span>
+  </div>
+  <div class="maintext">
+    <span>Центральний момент </span><input class="inputtext" type="text" value="2" id="centralorder" /><span>
+      порядку:</span><span id="centralmoment"></span>
+  </div>
+  <div class="maintext">
+    <span>Асиметрія:  </span><span id="Assymetry"></span>
+  </div>
+  <div class="maintext">
+    <span>Ексцес: </span><span id="Excess"></span>
+  </div>
+
+  <div class="tablecont">
+    <h2 style="color: white;">Графіки:</h2>
+  <table style="width: 100%;">
+  <tr>
+    <td class="graph"><div id="Poligon" ></div></td>
+    <td class="graph"><div id="Poligon_relative" ></div></td>
+  </tr>
+  <tr>
+    <td class="graph"><div id="Cumulative_basic"></div></td>
+    <td class="graph"><div id="Cumulative_relative"></div></td>
+  </tr>
+  <tr>
+    <td colspan="2" ><div id="Empiric"></div></td>
+  </tr>
+  </table>
+</div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="app.js" charset="utf-8"></script>
+</body>
+
+</html>
