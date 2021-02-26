@@ -318,6 +318,7 @@ function drawPoligon() {
     title: 'Полігон частот',
     curveType: 'line',
     legend: { position: 'right' },
+    pointSize: 4,
     vAxis: {
       viewWindow: {
         min: 0
@@ -339,6 +340,7 @@ function drawPolRelative() {
   var options = {
     title: 'Полігон відносних частот',
     curveType: 'line',
+    pointSize: 4,
     vAxis: {
       viewWindow: {
         min: 0
@@ -360,6 +362,7 @@ function drawCum() {
   var options = {
     title: 'Кумулятивна крива(нагромаджені частоти)',
     curveType: 'line',
+    pointSize: 4,
     vAxis: {
       viewWindow: {
         min: 0
@@ -381,6 +384,7 @@ function drawCumRelative() {
   var options = {
     title: 'Кумулятивна крива(нагромаджені відносні частоти)',
     curveType: 'line',
+    pointSize: 4,
     vAxis: {
       viewWindow: {
         min: 0
@@ -402,6 +406,7 @@ function drawEmpiric() {
   var options = {
     title: 'Емпірична функція',
     curveType: 'line',
+    pointSize: 4,
     vAxis: {
       viewWindow: {
         min: 0
