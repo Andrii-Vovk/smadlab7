@@ -21,7 +21,93 @@ function read() {
   return arr;
 }
 
-function average(arr) {
+function stergess() {
+  const arr = read();
+  let stergess = 1 + 3.322 * Math.log10(arr.length);
+  return Math.trunc(stergess);
+}
+
+function getIntervals() {
+  const intervalsArr = [];
+  const arr = read();
+
+  let xmax = Math.max(...arr);
+  let xmin = Math.min(...arr);
+  let l = (xmax - xmin) / stergess();
+  let tmp = {start:0, end:0};
+
+  tmp.start = xmin;
+  tmp.end = xmin + l;
+intervalsArr.push({start:tmp.start, end:tmp.end});
+  for (var i = 1; i < stergess(); i++) {
+    tmp.start = tmp.end;
+    tmp.end = tmp.end + l;
+    intervalsArr.push({start:tmp.start, end:tmp.end});
+  }
+  return intervalsArr;
+}
+
+console.table(getIntervals());
+
+function getMiddles() {
+  arr = getIntervals();
+  let middles = [];
+
+  for(var i = 0; i < arr.length; i++) {
+    middles.push((arr[i].end + arr[i].start)/2);
+  }
+
+  return middles;
+}
+
+console.table(getMiddles());
+
+function helpcount(start, end) {
+  let arr = read();
+  let counter = 0;
+  for(var i = 0; i < arr.length; i++) {
+    if(arr[i] >= start && arr[i] < end) {
+      counter++;
+    }
+  }
+  return counter;
+}
+
+function getFrequencies() {
+  const intervals = getIntervals(); 
+  let freqs = [];
+  for(var i = 0; i < stergess(); i++) {
+    freqs.push(helpcount(intervals[i].start, intervals[i].end));
+  }
+  return freqs;
+}
+
+console.table(getFrequencies());
+
+function createIntervalTable() {
+  let intervals = getIntervals();
+  let middles = getMiddles();
+  let freqs = getFrequencies();
+
+  let interval_row = document.getElementById('interval_row');
+  let middle_row = document.getElementById('middle_row');
+  let freq_row = document.getElementById('frequency_row');
+
+  for(var i = 0; i < intervals.length; i++) {
+    addCell('interval_row');
+    addCell('middle_row');
+    addCell('frequency_row');
+  }
+  let datatable = document.getElementById('intervalDataTable');
+  for(var i = 0; i < freqs.length; i++) {
+    datatable.rows[0].cells[i+1].innerHTML = (parseFloat(intervals[i].start).toFixed(3) + ' - ' + parseFloat(intervals[i].end).toFixed(3));
+    datatable.rows[1].cells[i+1].innerHTML = middles[i];
+    datatable.rows[2].cells[i+1].innerHTML = freqs[i];
+  }
+}
+
+createIntervalTable();  // to be deleted 
+/* function average(arr) {
   let sum = 0;
   for (var i = 0; i < arr.length; i++) {
     sum = sum + arr[i];
@@ -417,4 +503,4 @@ function drawEmpiric() {
 
   chart.draw(data, options);
 }
-
+ */
