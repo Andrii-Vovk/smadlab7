@@ -34,15 +34,15 @@ function getIntervals() {
   let xmax = Math.max(...arr);
   let xmin = Math.min(...arr);
   let l = (xmax - xmin) / stergess();
-  let tmp = {start:0, end:0};
+  let tmp = { start: 0, end: 0 };
 
   tmp.start = xmin;
   tmp.end = xmin + l;
-intervalsArr.push({start:tmp.start, end:tmp.end});
+  intervalsArr.push({ start: tmp.start, end: tmp.end });
   for (var i = 1; i < stergess(); i++) {
     tmp.start = tmp.end;
     tmp.end = tmp.end + l;
-    intervalsArr.push({start:tmp.start, end:tmp.end});
+    intervalsArr.push({ start: tmp.start, end: tmp.end });
   }
   return intervalsArr;
 }
@@ -53,8 +53,8 @@ function getMiddles() {
   arr = getIntervals();
   let middles = [];
 
-  for(var i = 0; i < arr.length; i++) {
-    middles.push((arr[i].end + arr[i].start)/2);
+  for (var i = 0; i < arr.length; i++) {
+    middles.push((arr[i].end + arr[i].start) / 2);
   }
 
   return middles;
@@ -65,8 +65,8 @@ console.table(getMiddles());
 function helpcount(start, end) {
   let arr = read();
   let counter = 0;
-  for(var i = 0; i < arr.length; i++) {
-    if(arr[i] >= start && arr[i] < end) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] >= start && arr[i] < end) {
       counter++;
     }
   }
@@ -74,9 +74,9 @@ function helpcount(start, end) {
 }
 
 function getFrequencies() {
-  const intervals = getIntervals(); 
+  const intervals = getIntervals();
   let freqs = [];
-  for(var i = 0; i < stergess(); i++) {
+  for (var i = 0; i < stergess(); i++) {
     freqs.push(helpcount(intervals[i].start, intervals[i].end));
   }
   return freqs;
@@ -93,79 +93,98 @@ function createIntervalTable() {
   let middle_row = document.getElementById('middle_row');
   let freq_row = document.getElementById('frequency_row');
 
-  for(var i = 0; i < intervals.length; i++) {
+  for (var i = 0; i < intervals.length; i++) {
     addCell('interval_row');
     addCell('middle_row');
     addCell('frequency_row');
   }
   let datatable = document.getElementById('intervalDataTable');
-  for(var i = 0; i < freqs.length; i++) {
-    datatable.rows[0].cells[i+1].innerHTML = (parseFloat(intervals[i].start).toFixed(3) + ' - ' + parseFloat(intervals[i].end).toFixed(3));
-    datatable.rows[1].cells[i+1].innerHTML = middles[i];
-    datatable.rows[2].cells[i+1].innerHTML = freqs[i];
+  for (var i = 0; i < freqs.length; i++) {
+    datatable.rows[0].cells[i + 1].innerHTML = (parseFloat(intervals[i].start).toFixed(3) + ' - ' + parseFloat(intervals[i].end).toFixed(3));
+    datatable.rows[1].cells[i + 1].innerHTML = middles[i];
+    datatable.rows[2].cells[i + 1].innerHTML = freqs[i];
   }
 }
 
-createIntervalTable();  // to be deleted 
-/* function average(arr) {
-  let sum = 0;
-  for (var i = 0; i < arr.length; i++) {
-    sum = sum + arr[i];
+function average() {
+  const middles = getMiddles();
+  const freqs = getFrequencies();
+  let avg = 0;
+
+  for (var i = 0; i < middles.length; i++) {
+    avg = avg + middles[i] * freqs[i];
   }
-  console.log(sum);
-  sum = parseFloat((sum / arr.length).toFixed(5));
-  //  sum = sum / arr.length;
-  return sum;
+  avg = avg / (read().length);
+  return avg;
 }
 
 function mode(arr) {
-  let N = arr.length;
-  let max = arr[0], cmax = 0, rmax = 0;
-  for (var i = 0; i < N; i++) {
-    if (cmax > rmax) {
-      rmax = cmax;
-      max = arr[i - 1];
+  let intervals = getIntervals();
+  let freqs = getFrequencies();
+
+  let id_modal = 0;
+
+  for (var i = 0; i < freqs.length; i++) {
+    if (freqs[i] === Math.max(...freqs)) {
+      id_modal = i;
+      break;
     }
-    cmax = 0;
-    for (var j = i; j < N; j++)
-      if (arr[j] == arr[i])
-        cmax++;
   }
-  console.log(max);
-  return max;
+
+  let premodal = 0;
+  if (id_modal > 0) {
+    premodal = freqs[id_modal - 1];
+  }
+  let aftermodal = 0;
+  if (id_modal < freqs.length - 1) {
+    aftermodal = freqs[id_modal + 1];
+  }
+
+  let modeval = 0;
+  modeval = intervals[id_modal].start + (((freqs[id_modal] - premodal) / (2 * freqs[id_modal] - premodal - aftermodal)) * (intervals[id_modal].end - intervals[id_modal].start))
+  return modeval;
 }
 
-function median() {
-  let array = read();
-  array = array.sort(function (a, b) {
-    return a - b;
-  });
-  let med = 0;
-  if (array.length % 2 === 0) {
-    med = (array[array.length / 2] + array[array.length / 2 - 1]) / 2;
+function getMedByInterval(id) {
+  let intervals = getIntervals();
+  let freqs = getFrequencies();
+
+  let l = intervals[id].end - intervals[id].start;
+
+  let cummulativeFreqs = 0;
+  for (var i = 0; i < id; i++) {
+    cummulativeFreqs = cummulativeFreqs + freqs[i];
   }
-  else {
-    med = array[Math.floor(array.length / 2)];
-  }
+
+  let med = intervals[id].start + ((l / freqs[id]) * ((read().length / 2) - cummulativeFreqs))
   return med;
 }
 
+function median() {
+  let freqs = getFrequencies();
+  if (freqs.length % 2 !== 0) {
+    return getMedByInterval(Math.trunc(freqs.length / 2));
+  }
+  else {
+    return (getMedByInterval(Math.trunc(freqs.length / 2 - 1)) + getMedByInterval(Math.trunc(freqs.length / 2))) * 0.5;
+  }
+}
+
 function maxmin() {
-  let newarr = read();
-  return (Math.max(...newarr) - Math.min(...newarr)).toFixed(2);
+  return (Math.max(...read()) - Math.min(...read())).toFixed(2);
 }
 
 function dispersion() {
-  let newarr = read();
-  let dispersion = 0;
-  let sum = 0;
-  let avg = average(newarr);
-  console.log(avg);
-  for (var i = 0; i < newarr.length; i++) {
-    sum = sum + Math.pow(newarr[i] - avg, 2);
+  let middles = getMiddles();
+  let freqs = getFrequencies();
+
+  let avg = average();
+  let disp = 0;
+  for (var i = 0; i < freqs.length; i++) {
+    disp = disp + freqs[i] * Math.pow((middles[i] - avg), 2);
   }
-  sum = sum / newarr.length;
-  return parseFloat(sum.toFixed(7));
+  disp = disp / read().length;
+  return disp;
 }
 
 function truedisp() {
@@ -175,31 +194,40 @@ function truedisp() {
 }
 
 function variation() {
-  let newarr = read();
-  return Math.sqrt(dispersion()) / average(newarr);
+  return Math.sqrt(dispersion()) / average();
 }
 
 function startmoment() {
   let order = parseFloat(document.getElementById('startorder').value);
-  let arr = read();
   let moment = 0;
+
+  let middles = getMiddles();
+  let freqs = getFrequencies();
+
+  if (order === 0) return 1;
+  if (order === 0) return average();
+
   for (var i = 0; i < arr.length; i++) {
-    moment += Math.pow(arr[i], order);
+    moment += freqs[i] * Math.pow(middles[i], order);
   }
-  moment = moment / arr.length;
+  moment /= read().length;
   return moment;
 }
 
-function centralmoment(ord) {
-  let order = ord;
-  if (order == 1) return 0;
-  let arr = read();
+function centralmoment(order = -1) {
+  if (order === -1)
+    trueorder = parseFloat(document.getElementById('centralmoment').innerHTML);
+  else trueorder = order;
+
+  let middles = getMiddles();
+  let freqs = getFrequencies();
+
   let moment = 0;
-  let avg = average(arr);
-  for (var i = 0; i < arr.length; i++) {
-    moment += Math.pow(arr[i] - avg, order);
+
+  for (var i = 0; i < freqs.length; i++) {
+    moment += freqs[i] * Math.pow((middles[i] - average()), trueorder);
   }
-  moment = moment / arr.length;
+  moment = moment / read().length;
   return moment;
 }
 
@@ -212,8 +240,8 @@ function excess() {
 }
 
 function setLabels() {
-  let arr = read();
-  document.getElementById('average').innerHTML = average(arr);
+  createIntervalTable();
+  document.getElementById('average').innerHTML = average();
   document.getElementById('mode').innerHTML = mode(arr);
   document.getElementById('median').innerHTML = median();
   document.getElementById('minmax').innerHTML = maxmin();
@@ -223,15 +251,17 @@ function setLabels() {
   document.getElementById('trueAvgSquare').innerHTML = Math.sqrt(truedisp());
   document.getElementById('variation').innerHTML = variation();
   document.getElementById('startmoment').innerHTML = startmoment();
-  document.getElementById('centralmoment').innerHTML = centralmoment(parseFloat(document.getElementById('centralorder').value));
+  document.getElementById('centralmoment').innerHTML = centralmoment();
   document.getElementById('Assymetry').innerHTML = assymetry();
   document.getElementById('Excess').innerHTML = excess();
 
+  
   drawPoligon();
   drawPolRelative();
   drawCum();
   drawCumRelative();
   drawEmpiric();
+
 }
 
 
@@ -239,7 +269,6 @@ function main() {
   addbtn.addEventListener('click', () => addCell('zero'));
   removebtn.addEventListener('click', () => deleteCell('zero'));
   donebtn.addEventListener('click', () => setLabels());
-  startmoment();
 }
 
 main();
@@ -503,4 +532,3 @@ function drawEmpiric() {
 
   chart.draw(data, options);
 }
- */
