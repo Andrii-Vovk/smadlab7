@@ -16,21 +16,62 @@
   </header>
 
   <div class="xtable table-responsive">
+    <h3 class="maintext">Дискретний статистичний ряд:</h3>
     <table contenteditable="true" id="dataTable" class="table table-bordered table-dark">
       <tr id="zero">
         <th>X<sub>i</sub></th>
         <td>0.38</td>
+        <td>0.34</td>
         <td>0.37</td>
-        <td>0.38</td>
+        <td>0.56</td>
+        <td>0.63</td>
+        <td>0.03</td>
+        <td>0.96</td>
+        <td>0.54</td>
+        <td>0.24</td>
+        <td>0.19</td>
+        <td>0.12</td>
+        <td>0.00</td>
+        <td>0.26</td>
+        <td>0.34</td>
+        <td>0.57</td>
+        <td>0.72</td>
+        <td>0.77</td>
+        <td>0.85</td>
+        <td>0.64</td>
+        <td>0.45</td>
+        <td>0.24</td>
+        <td>0.99</td>
+        <td>0.59</td>
+        <td>0.43</td>
+        <td>0.23</td>
+        <td>0.12</td>
+        <td>0.24</td>
         <td>0.36</td>
-        <td>0.40</td>
-        <td>0.36</td>
-        <td>0.48</td>
-        <td>0.32</td>
+        <td>0.52</td>
+        <td>0.56</td>
+        <td>0.68</td>
+        <td>0.62</td>
+        <td>0.52</td>
+        <td>0.20</td>
+        <td>0.24</td>
+        <td>0.19</td>
       </tr>
     </table>
   </div>
-
+  <div id="interval_div" class="xtable table-responsive">
+    <table contenteditable="true" id="dataTable" class="table table-bordered table-dark">
+      <tr id="interval_row">
+      <td></td>
+      </tr>
+      <tr id="middle_row">
+        <td></td>
+      </tr>
+      <tr id="frequency">
+        <td></td>
+      </tr>
+    </table>
+  </div>
   <div id="table_buttons">
     <span id="addbtn">
       <button type="button" class="btn btn-success">Додати</button>
@@ -79,7 +120,7 @@
       порядку:</span><span id="centralmoment"></span>
   </div>
   <div class="maintext">
-    <span>Асиметрія:  </span><span id="Assymetry"></span>
+    <span>Асиметрія: </span><span id="Assymetry"></span>
   </div>
   <div class="maintext">
     <span>Ексцес: </span><span id="Excess"></span>
@@ -87,20 +128,30 @@
 
   <div class="tablecont">
     <h2 style="color: white;">Графіки:</h2>
-  <table style="width: 100%;">
-  <tr>
-    <td class="graph"><div id="Poligon" ></div></td>
-    <td class="graph"><div id="Poligon_relative" ></div></td>
-  </tr>
-  <tr>
-    <td class="graph"><div id="Cumulative_basic"></div></td>
-    <td class="graph"><div id="Cumulative_relative"></div></td>
-  </tr>
-  <tr>
-    <td colspan="2" ><div id="Empiric"></div></td>
-  </tr>
-  </table>
-</div>
+    <table style="width: 100%;">
+      <tr>
+        <td class="graph">
+          <div id="Poligon"></div>
+        </td>
+        <td class="graph">
+          <div id="Poligon_relative"></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="graph">
+          <div id="Cumulative_basic"></div>
+        </td>
+        <td class="graph">
+          <div id="Cumulative_relative"></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div id="Empiric"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
