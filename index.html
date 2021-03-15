@@ -56,22 +56,30 @@
         <td>0.20</td>
         <td>0.24</td>
         <td>0.19</td>
+        <td>0.26</td>
+        <td>0.30</td>
+        <td>0.29</td>
+        <td>0.32</td>
+        <td>0.36</td>
+        <td>0.37</td>
+        <td>0.37</td>
+        <td>0.52</td>
+        <td>0.36</td>
+        <td>0.68</td>
+        <td>0.76</td>
+        <td>0.68</td>
       </tr>
     </table>
   </div>
-  <div id="interval_div" class="xtable table-responsive">
-    <h3 class="maintext">Інтервальний статистичний ряд:</h3>
-    <table contenteditable="true" id="intervalDataTable" class="table table-bordered table-dark">
-      <tr id="interval_row">
-        <th>Інтервал</th>
-      </tr>
-      <tr id="middle_row">
-        <th>Середина інтервалу</th>
-      </tr>
-      <tr id="frequency_row">
-        <th>Частота</th>
-      </tr>
-    </table>
+
+  <div class="maintext">
+    <label for="significance">Значимість:</label>
+    <select id="significance">
+      <option value="0.05">0.05</option>
+      <option value="0.01">0.01</option>
+      <option value="0.001">0.001</option>
+    </select>
+
   </div>
   <div id="table_buttons">
     <span id="addbtn">
@@ -85,17 +93,8 @@
     </span>
   </div>
 
-  <div class="maintext">
+  <div class="maintext" style="padding-bottom: 5px;">
     <span>Середнє статистичне: </span><span id="average"></span>
-  </div>
-  <div class="maintext">
-    <span>Мода: </span><span id="mode"></span>
-  </div>
-  <div class="maintext">
-    <span>Медіана: </span><span id="median"></span>
-  </div>
-  <div class="maintext">
-    <span>Розмах: </span><span id="minmax"></span>
   </div>
   <div class="maintext">
     <span>Дисперсія: </span><span id="disp"></span>
@@ -103,56 +102,22 @@
   <div class="maintext">
     <span>Середнє квадратичне: </span><span id="AvgSquare"></span>
   </div>
-  <div class="maintext">
-    <span>Виправлена дисперсія: </span><span id="truedisp"></span>
-  </div>
-  <div class="maintext">
-    <span>Виправлене середнє квадратичне: </span><span id="trueAvgSquare"></span>
-  </div>
-  <div class="maintext">
-    <span>Варіація: </span><span id="variation"></span>
-  </div>
-  <div class="maintext">
-    <span>Початковий момент </span><input class="inputtext" type="text" value="2" id="startorder" /><span>
-      порядку:</span><span id="startmoment"></span>
-  </div>
-  <div class="maintext">
-    <span>Центральний момент </span><input class="inputtext" type="text" value="2" id="centralorder" /><span>
-      порядку:</span><span id="centralmoment"></span>
-  </div>
-  <div class="maintext">
-    <span>Асиметрія: </span><span id="Assymetry"></span>
-  </div>
-  <div class="maintext">
-    <span>Ексцес: </span><span id="Excess"></span>
+ 
+  <div class="maintext emp">
+    <span>Інтервальна оцінка матсподівання при відомій дисперсії: </span>
+    <br>
+    <span id="expectdisp"></span>
+    <br>
+    <span>Інтервальна оцінка матсподівання: </span>
+    <br>
+    <span id="expect"></span>
+    <br>
+    <span>Інтервальна оцінка середнього квадратичного відхилення: </span>
+    <br>
+    <span id="AvgSquareInterval"></span>
   </div>
 
-  <div class="tablecont">
-    <h2 style="color: white;">Графіки:</h2>
-    <table style="width: 100%;">
-      <tr>
-        <td class="graph">
-          <div id="Poligon"></div>
-        </td>
-        <td class="graph">
-          <div id="Poligon_relative"></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="graph">
-          <div id="Cumulative_basic"></div>
-        </td>
-        <td class="graph">
-          <div id="Cumulative_relative"></div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <div id="Empiric"></div>
-        </td>
-      </tr>
-    </table>
-  </div>
+ 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>

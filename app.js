@@ -23,171 +23,32 @@ function read() {
   return arr;
 }
 
-function stergess() {
-  const arr = read();
-  let stergess = 1 + 3.322 * Math.log10(arr.length);
-  return Math.trunc(stergess);
-}
-
-function getIntervals() {
-  const intervalsArr = [];
-  const arr = read();
-
-  let xmax = Math.max(...arr);
-  let xmin = Math.min(...arr);
-  let l = (xmax - xmin) / stergess();
-  let tmp = { start: 0, end: 0 };
-
-  tmp.start = xmin;
-  tmp.end = xmin + l;
-  intervalsArr.push({ start: tmp.start, end: tmp.end });
-  for (var i = 1; i < stergess(); i++) {
-    tmp.start = tmp.end;
-    tmp.end = tmp.end + l;
-    intervalsArr.push({ start: tmp.start, end: tmp.end });
-    //  intervalsArr.push(tmp);
-  }
-  return intervalsArr;
-}
-
-//console.table(getIntervals());
-
-function getMiddles() {
-  arr = getIntervals();
-  let middles = [];
-
+function average(arr) {
+  let sum = 0;
   for (var i = 0; i < arr.length; i++) {
-    middles.push((arr[i].end + arr[i].start) / 2);
+    sum = sum + arr[i];
   }
-
-  return middles;
-}
-
-//console.table(getMiddles());
-
-function helpcount(start, end) {
-  let arr = read();
-  let counter = 0;
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] >= start && arr[i] < end) {
-      counter++;
-    }
-  }
-  return counter;
-}
-
-function getFrequencies() {
-  const intervals = getIntervals();
-  let freqs = [];
-  for (var i = 0; i < stergess(); i++) {
-    freqs.push(helpcount(intervals[i].start, intervals[i].end));
-  }
-  return freqs;
-}
-
-//console.table(getFrequencies());
-
-function createIntervalTable() {
-  let intervals = getIntervals();
-  let middles = getMiddles();
-  let freqs = getFrequencies();
-
-  let interval_row = document.getElementById('interval_row');
-  let middle_row = document.getElementById('middle_row');
-  let freq_row = document.getElementById('frequency_row');
-
-  for (var i = 0; i < intervals.length; i++) {
-    addCell('interval_row');
-    addCell('middle_row');
-    addCell('frequency_row');
-  }
-  let datatable = document.getElementById('intervalDataTable');
-  for (var i = 0; i < freqs.length; i++) {
-    datatable.rows[0].cells[i + 1].innerHTML = (parseFloat(intervals[i].start).toFixed(3) + ' - ' + parseFloat(intervals[i].end).toFixed(3));
-    datatable.rows[1].cells[i + 1].innerHTML = middles[i];
-    datatable.rows[2].cells[i + 1].innerHTML = freqs[i];
-  }
-}
-
-function average() {
-  const middles = getMiddles();
-  const freqs = getFrequencies();
-  let avg = 0;
-
-  for (var i = 0; i < middles.length; i++) {
-    avg = avg + middles[i] * freqs[i];
-  }
-  avg = avg / (read().length);
-  return avg;
-}
-
-function mode(arr) {
-  let intervals = getIntervals();
-  let freqs = getFrequencies();
-
-  let id_modal = 0;
-
-  for (var i = 0; i < freqs.length; i++) {
-    if (freqs[i] === Math.max(...freqs)) {
-      id_modal = i;
-      break;
-    }
-  }
-
-  let premodal = 0;
-  if (id_modal > 0) {
-    premodal = freqs[id_modal - 1];
-  }
-  let aftermodal = 0;
-  if (id_modal < freqs.length - 1) {
-    aftermodal = freqs[id_modal + 1];
-  }
-
-  let modeval = 0;
-  modeval = intervals[id_modal].start + (((freqs[id_modal] - premodal) / (2 * freqs[id_modal] - premodal - aftermodal)) * (intervals[id_modal].end - intervals[id_modal].start))
-  return modeval;
-}
-
-function getMedByInterval(id) {
-  let intervals = getIntervals();
-  let freqs = getFrequencies();
-
-  let l = intervals[id].end - intervals[id].start;
-
-  let cummulativeFreqs = 0;
-  for (var i = 0; i < id; i++) {
-    cummulativeFreqs = cummulativeFreqs + freqs[i];
-  }
-
-  let med = intervals[id].start + ((l / freqs[id]) * ((read().length / 2) - cummulativeFreqs))
-  return med;
-}
-
-function median() {
-  let freqs = getFrequencies();
-  if (freqs.length % 2 !== 0) {
-    return getMedByInterval(Math.trunc(freqs.length / 2));
-  }
-  else {
-    return (getMedByInterval(Math.trunc(freqs.length / 2 - 1)) + getMedByInterval(Math.trunc(freqs.length / 2))) * 0.5;
-  }
-}
-
-function maxmin() {
-  return (Math.max(...read()) - Math.min(...read())).toFixed(2);
+  //console.log(sum);
+  sum = parseFloat((sum / arr.length).toFixed(5));
+  //  sum = sum / arr.length;
+  return sum;
 }
 
 function dispersion() {
-  let middles = getMiddles();
-  let freqs = getFrequencies();
-
-  let avg = average();
-  let disp = 0;
-  for (var i = 0; i < freqs.length; i++) {
-    disp = disp + freqs[i] * Math.pow((middles[i] - avg), 2);
+  let newarr = read();
+  let dispersion = 0;
+  let sum = 0;
+  let avg = average(newarr);
+ //console.log(avg);
+  for (var i = 0; i < newarr.length; i++) {
+    sum = sum + Math.pow(newarr[i] - avg, 2);
   }
-  disp = disp / read().length;
-  return disp;
+  sum = sum / newarr.length;
+  return parseFloat(sum.toFixed(7));
+}
+
+function AvgSquare() {
+  return Math.sqrt(dispersion());
 }
 
 function truedisp() {
@@ -196,75 +57,18 @@ function truedisp() {
   return newdisp;
 }
 
-function variation() {
-  return Math.sqrt(dispersion()) / average();
-}
-
-function startmoment() {
-  let order = parseFloat(document.getElementById('startorder').value);
-  let moment = 0;
-
-  let middles = getMiddles();
-  let freqs = getFrequencies();
-
-  if (order === 0) return 1;
-  if (order === 0) return average();
-
-  for (var i = 0; i < arr.length; i++) {
-    moment += freqs[i] * Math.pow(middles[i], order);
-  }
-  moment /= read().length;
-  return moment;
-}
-
-function centralmoment(order = -1) {
-  if (order === -1)
-    trueorder = parseFloat(document.getElementById('centralmoment').innerHTML);
-  else trueorder = order;
-
-  let middles = getMiddles();
-  let freqs = getFrequencies();
-
-  let moment = 0;
-
-  for (var i = 0; i < freqs.length; i++) {
-    moment += freqs[i] * Math.pow((middles[i] - average()), trueorder);
-  }
-  moment = moment / read().length;
-  return moment;
-}
-
-function assymetry() {
-  return (centralmoment(3) / Math.pow(Math.sqrt(dispersion()), 3))
-}
-
-function excess() {
-  return ((centralmoment(4) / Math.pow(Math.sqrt(dispersion()), 4)) - 3);
+function trueAvgSquare() {
+  return Math.sqrt(truedisp());
 }
 
 function setLabels() {
-  createIntervalTable();
-  document.getElementById('average').innerHTML = average();
-  document.getElementById('mode').innerHTML = mode(arr);
-  document.getElementById('median').innerHTML = median();
-  document.getElementById('minmax').innerHTML = maxmin();
+  document.getElementById('average').innerHTML = average(read());
   document.getElementById('disp').innerHTML = dispersion();
-  document.getElementById('AvgSquare').innerHTML = Math.sqrt(dispersion());
-  document.getElementById('truedisp').innerHTML = truedisp();
-  document.getElementById('trueAvgSquare').innerHTML = Math.sqrt(truedisp());
-  document.getElementById('variation').innerHTML = variation();
-  document.getElementById('startmoment').innerHTML = startmoment();
-  document.getElementById('centralmoment').innerHTML = centralmoment();
-  document.getElementById('Assymetry').innerHTML = assymetry();
-  document.getElementById('Excess').innerHTML = excess();
+  document.getElementById('AvgSquare').innerHTML = AvgSquare();
 
-
-  drawPoligon();
-  drawPolRelative();
-  drawCum();
-  drawCumRelative();
-  drawEmpiric();
-
+  expectationDisp();
+  expectation();
+  avgSqureInterval()
 }
 
 
@@ -276,345 +80,67 @@ function main() {
 
 main();
 
-function getCountsArray() {
-  //var a = [], b = [], prev;
-  /* let arr = read();
-  arr.sort(function (a, b) { return a - b; });
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  } */
-  const data = [];
-  const ints = getIntervals();
-  var l = ints[0].end - ints[0].start;
-  const freqs = getFrequencies();
+function convertTyLaplace(significance) {
+  let laplaceFunction = new Map();
+  laplaceFunction.set(0.95, 1.95);
+  laplaceFunction.set(0.99, 2.58);
+  laplaceFunction.set(0.999, 3.38);
 
-  for (var i = 0; i < freqs.length; i++) {
-    data.push([ints[i].start, 0]);
-    data.push([ints[i].start, freqs[i] / l]);
-    data.push([ints[i].end, freqs[i] / l])
-    data.push([ints[i].end, 0])
-  }
-  /*  for (var i = 0; i < a.length; i++) {
-     data.push([a[i], b[i]]);
-   } */
- // console.table(data);
-  return data;
+  return laplaceFunction.get(significance);
 }
 
-function getCountsArrayRelative() {
-  const data = [];
-  const ints = getIntervals();
-  var l = ints[0].end - ints[0].start;
-  const freqs = getFrequencies();
+function convertTyStudent(significance) {
+  let studentFunction = new Map();
+  studentFunction.set(0.95, 2.02);
+  studentFunction.set(0.99, 2.70);
+  studentFunction.set(0.999, 3.55);
 
-  var sum = 0;
-  freqs.forEach(element => {
-    sum += element;
-  });
-
-  for (var i = 0; i < freqs.length; i++) {
-    freqs[i] /= sum;
-  }
-
-  for (var i = 0; i < freqs.length; i++) {
-    data.push([ints[i].start, 0]);
-    data.push([ints[i].start, freqs[i] / l]);
-    data.push([ints[i].end, freqs[i] / l])
-    data.push([ints[i].end, 0])
-  }
-  /*  for (var i = 0; i < a.length; i++) {
-     data.push([a[i], b[i]]);
-   } */
- // console.table(data);
-  return data;
+  return studentFunction.get(significance);
 }
 
-function getCountsArrayCumulative() {
-  var a = [], b = [], prev;
-  /* let arr = read();
-  arr.sort(function(a,b) { return a - b;});
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  }
+function convertTyQ(significance) {
+  let q = new Map();
+  q.set(0.95, 0.22);
+  q.set(0.99, 0.32);
+  q.set(0.999, 0.46);
 
-  for (var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i - 1];
-  } */
-  a = getMiddles();
-  b = getFrequencies();
-
-  for (var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i - 1];
-  }
-
-  const data = [];
-  for (var i = 0; i < a.length; i++) {
-    data.push([a[i], b[i]]);
-  }
-  return data;
+  return q.get(significance);
 }
 
-function getCountsArrayCumRelative() {
-  var a = [], b = [], prev;
-  const data = [];
-  /* let arr = read();
-  arr.sort(function (a, b) { return a - b; });
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  }
+function expectationDisp() {
+  var laplace = 1-parseFloat(document.getElementById('significance').value);
+  laplace = convertTyLaplace(laplace);
 
-  const data = [];
-  let sum = 0;
-  for (var i = 0; i < b.length; i++) {
-    sum = sum + b[i];
-  }
+  let arg = (AvgSquare()/Math.sqrt(read().length))*laplace;
+  let left = average(read()) - arg;
+  let right = average(read()) + arg;
 
-  for (var i = 0; i < b.length; i++) {
-    b[i] = b[i] / sum;
-  }
+  //console.log(left + '< m <' + right);
 
-  for (var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i - 1];
-  } */
-  a = getMiddles();
-  b = getFrequencies();
-  var sum = 0;
-  for (var i = 0; i < b.length; i++) {
-    sum += b[i];
-  }
-
-  for (var i = 0; i < b.length; i++) {
-    b[i] = b[i] / sum;
-  }
-
-  for (var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i - 1];
-  }
-
-  for (var i = 0; i < b.length; i++) {
-    data.push([a[i], b[i]]);
-  }
-  return data;
+  document.getElementById('expectdisp').innerHTML = left + ' < m < ' + right;
 }
 
-function getCountsEmpiric() {
-  var a = [], b = [], temp;
-  /* let arr = read();
-  arr.sort(function (a, b) { return a - b; });
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  }
+function expectation() {
+  var student = 1-parseFloat(document.getElementById('significance').value);
+  student = convertTyStudent(student);
 
-  for (var i = 1; i < b.length; i++) {
-    b[i] = b[i] + b[i - 1];
-  }
+  let arg = (AvgSquare()/Math.sqrt(read().length))*student;
+  let left = average(read()) - arg;
+  let right = average(read()) + arg;
 
-  let Narr = read();
-  let N = Narr.length;
+  //console.log(left + '< m <' + right);
 
-  for (var i = 1; i < b.length; i++) {
-    b[i] = (b[i] / N);
-  }
-  b[0] = 0; */
-
-  b = getFrequencies();
-  temp = getIntervals();
-  var l = temp[0].end - temp[0].start;
-  a.push(temp[0].start + l);
-
-  for (var i = 1; i < b.length; i++) {
-    a.push(a[i - 1] + l);
-  }
-
-  var sum = 0;
-  for (var i = 0; i < b.length; i++) {
-    sum += b[i];
-  }
-
-  for (var i = 0; i < b.length; i++) {
-    b[i] /= sum;
-  }
-
-  for (var i = 1; i < b.length; i++) {
-    b[i] += b[i - 1];
-  }
-  const data = [];
-  for (var i = 0; i < a.length; i++) {
-    data.push([a[i], b[i]]);
-  }
- // console.table(data);
-  return data;
+  document.getElementById('expect').innerHTML = left + ' < m < ' + right;
 }
 
-google.charts.load('current', { 'packages': ['corechart'] });
-google.charts.setOnLoadCallback(drawPoligon);
-google.charts.setOnLoadCallback(drawPolRelative);
-google.charts.setOnLoadCallback(drawCum);
-google.charts.setOnLoadCallback(drawCumRelative);
-google.charts.setOnLoadCallback(drawEmpiric);
+function avgSqureInterval() {
+  var q = 1-parseFloat(document.getElementById('significance').value);
+  q = convertTyQ(q);
+  /* console.log(q)
+  console.log(1-q) */
+  var left = trueAvgSquare() * (1-q);
+  var right = trueAvgSquare() * (1+q);
 
-function drawPoligon() {
-  const vticks = getFrequencies();
-  const tempints = getIntervals();
-  var l = tempints[0].end - tempints[0].start;
-  for(var i = 0; i < vticks.length; i++) {
-    vticks[i] /= l;
-  }
-/*   console.table(vticks); */
-  const prepdata = [];
-  const newarr = getCountsArray();
-  prepdata.push(['Element', 'Значення']);
-  prepdata.push(...newarr);
-  var data = google.visualization.arrayToDataTable(prepdata);  //get new data
+  document.getElementById('AvgSquareInterval').innerHTML = left + ' < σ < ' + right;
 
-  var options = {
-    title: 'Гістограма частот',
-    curveType: 'line',
-    legend: { position: 'right' },
-    pointSize: 0,
-    vAxis: {
-      ticks: vticks,
-      viewWindow: {
-        min: 0
-      }
-    }
-  };
-  var chart = new google.visualization.AreaChart(document.getElementById('Poligon'));
-
-  chart.draw(data, options);
-}
-
-function drawPolRelative() {
-  const vticks = getFrequencies();
-  const tempints = getIntervals();
-  var l = tempints[0].end - tempints[0].start;
-
-  var sum = 0;
-  vticks.forEach(element => {
-    sum += element;
-  });
-
-  for(var i = 0; i < vticks.length; i++) {
-    vticks[i] /= l;
-    vticks[i] /= sum;
-  }
-
-  
-
-  const prepdata = [];
-  const newarr = getCountsArrayRelative();
-  prepdata.push(['Element', 'Значення']);
-  prepdata.push(...newarr);
-  var data = google.visualization.arrayToDataTable(prepdata);  //get new data
-
-  var options = {
-    title: 'Гістограма відносних частот',
-    curveType: 'line',
-    pointSize: 0,
-    vAxis: {
-      ticks: vticks,
-      viewWindow: {
-        min: 0
-      }
-    }
-  };
-  var chart = new google.visualization.AreaChart(document.getElementById('Poligon_relative'));
-
-  chart.draw(data, options);
-}
-
-function drawCum() {
-  const prepdata = [];
-  const newarr = getCountsArrayCumulative();
-  prepdata.push(['Element', 'Значення']);
-  prepdata.push(...newarr);
-  var data = google.visualization.arrayToDataTable(prepdata);  //get new data
-
-  var options = {
-    title: 'Кумулятивна крива(нагромаджені частоти)',
-    curveType: 'line',
-    pointSize: 4,
-    vAxis: {
-      viewWindow: {
-        min: 0
-      }
-    },
-    hAxis: {
-      ticks: [0].concat(getMiddles())
-    }
-  };
-  var chart = new google.visualization.LineChart(document.getElementById('Cumulative_basic'));
-
-  chart.draw(data, options);
-}
-
-function drawCumRelative() {
-  const prepdata = [];
-  const newarr = getCountsArrayCumRelative();
-  prepdata.push(['Element', 'Значення']);
-  prepdata.push(...newarr);
-  var data = google.visualization.arrayToDataTable(prepdata);  //get new data
-
-  var options = {
-    title: 'Кумулятивна крива(нагромаджені відносні частоти)',
-    curveType: 'line',
-    pointSize: 4,
-    vAxis: {
-      viewWindow: {
-        min: 0
-      }
-    },
-    hAxis: {
-      ticks: [0].concat(getMiddles())
-    }
-  };
-  var chart = new google.visualization.LineChart(document.getElementById('Cumulative_relative'));
-
-  chart.draw(data, options);
-}
-
-function drawEmpiric() {
-  const prepdata = [];
-  const newarr = getCountsEmpiric();
-  prepdata.push(['Element', 'Значення']);
-  prepdata.push(...newarr);
-  var data = google.visualization.arrayToDataTable(prepdata);  //get new data
-
-  var options = {
-    title: 'Емпірична функція',
-    curveType: 'line',
-    pointSize: 4,
-    vAxis: {
-      viewWindow: {
-        min: 0
-      }
-    }
-  };
-  var chart = new google.visualization.SteppedAreaChart(document.getElementById('Empiric'));
-
-  chart.draw(data, options);
 }
