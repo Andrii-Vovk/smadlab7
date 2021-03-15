@@ -1,3 +1,5 @@
+
+
 const removebtn = document.getElementById('removebtn');
 const addbtn = document.getElementById('addbtn');
 const donebtn = document.getElementById('donebtn')
@@ -43,11 +45,12 @@ function getIntervals() {
     tmp.start = tmp.end;
     tmp.end = tmp.end + l;
     intervalsArr.push({ start: tmp.start, end: tmp.end });
+    //  intervalsArr.push(tmp);
   }
   return intervalsArr;
 }
 
-console.table(getIntervals());
+//console.table(getIntervals());
 
 function getMiddles() {
   arr = getIntervals();
@@ -60,7 +63,7 @@ function getMiddles() {
   return middles;
 }
 
-console.table(getMiddles());
+//console.table(getMiddles());
 
 function helpcount(start, end) {
   let arr = read();
@@ -82,7 +85,7 @@ function getFrequencies() {
   return freqs;
 }
 
-console.table(getFrequencies());
+//console.table(getFrequencies());
 
 function createIntervalTable() {
   let intervals = getIntervals();
@@ -255,7 +258,7 @@ function setLabels() {
   document.getElementById('Assymetry').innerHTML = assymetry();
   document.getElementById('Excess').innerHTML = excess();
 
-  
+
   drawPoligon();
   drawPolRelative();
   drawCum();
@@ -274,9 +277,68 @@ function main() {
 main();
 
 function getCountsArray() {
+  //var a = [], b = [], prev;
+  /* let arr = read();
+  arr.sort(function (a, b) { return a - b; });
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] !== prev) {
+      a.push(arr[i]);
+      b.push(1);
+    } else {
+      b[b.length - 1]++;
+    }
+    prev = arr[i];
+  } */
+  const data = [];
+  const ints = getIntervals();
+  var l = ints[0].end - ints[0].start;
+  const freqs = getFrequencies();
+
+  for (var i = 0; i < freqs.length; i++) {
+    data.push([ints[i].start, 0]);
+    data.push([ints[i].start, freqs[i] / l]);
+    data.push([ints[i].end, freqs[i] / l])
+    data.push([ints[i].end, 0])
+  }
+  /*  for (var i = 0; i < a.length; i++) {
+     data.push([a[i], b[i]]);
+   } */
+ // console.table(data);
+  return data;
+}
+
+function getCountsArrayRelative() {
+  const data = [];
+  const ints = getIntervals();
+  var l = ints[0].end - ints[0].start;
+  const freqs = getFrequencies();
+
+  var sum = 0;
+  freqs.forEach(element => {
+    sum += element;
+  });
+
+  for (var i = 0; i < freqs.length; i++) {
+    freqs[i] /= sum;
+  }
+
+  for (var i = 0; i < freqs.length; i++) {
+    data.push([ints[i].start, 0]);
+    data.push([ints[i].start, freqs[i] / l]);
+    data.push([ints[i].end, freqs[i] / l])
+    data.push([ints[i].end, 0])
+  }
+  /*  for (var i = 0; i < a.length; i++) {
+     data.push([a[i], b[i]]);
+   } */
+ // console.table(data);
+  return data;
+}
+
+function getCountsArrayCumulative() {
   var a = [], b = [], prev;
-  let arr = read();
-  arr.sort();
+  /* let arr = read();
+  arr.sort(function(a,b) { return a - b;});
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] !== prev) {
       a.push(arr[i]);
@@ -287,6 +349,16 @@ function getCountsArray() {
     prev = arr[i];
   }
 
+  for (var i = 1; i < b.length; i++) {
+    b[i] = b[i] + b[i - 1];
+  } */
+  a = getMiddles();
+  b = getFrequencies();
+
+  for (var i = 1; i < b.length; i++) {
+    b[i] = b[i] + b[i - 1];
+  }
+
   const data = [];
   for (var i = 0; i < a.length; i++) {
     data.push([a[i], b[i]]);
@@ -294,10 +366,11 @@ function getCountsArray() {
   return data;
 }
 
-function getCountsArrayRelative() {
+function getCountsArrayCumRelative() {
   var a = [], b = [], prev;
-  let arr = read();
-  arr.sort();
+  const data = [];
+  /* let arr = read();
+  arr.sort(function (a, b) { return a - b; });
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] !== prev) {
       a.push(arr[i]);
@@ -318,55 +391,14 @@ function getCountsArrayRelative() {
     b[i] = b[i] / sum;
   }
 
-  for (var i = 0; i < b.length; i++) {
-    data.push([a[i], b[i]]);
-  }
-  return data;
-}
-
-function getCountsArrayCumulative() {
-  var a = [], b = [], prev;
-  let arr = read();
-  arr.sort();
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  }
-
   for (var i = 1; i < b.length; i++) {
     b[i] = b[i] + b[i - 1];
-  }
-
-  const data = [];
-  for (var i = 0; i < a.length; i++) {
-    data.push([a[i], b[i]]);
-  }
-  return data;
-}
-
-function getCountsArrayCumRelative() {
-  var a = [], b = [], prev;
-  let arr = read();
-  arr.sort();
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] !== prev) {
-      a.push(arr[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = arr[i];
-  }
-
-  const data = [];
-  let sum = 0;
+  } */
+  a = getMiddles();
+  b = getFrequencies();
+  var sum = 0;
   for (var i = 0; i < b.length; i++) {
-    sum = sum + b[i];
+    sum += b[i];
   }
 
   for (var i = 0; i < b.length; i++) {
@@ -384,9 +416,9 @@ function getCountsArrayCumRelative() {
 }
 
 function getCountsEmpiric() {
-  var a = [], b = [], prev;
-  let arr = read();
-  arr.sort();
+  var a = [], b = [], temp;
+  /* let arr = read();
+  arr.sort(function (a, b) { return a - b; });
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] !== prev) {
       a.push(arr[i]);
@@ -407,11 +439,34 @@ function getCountsEmpiric() {
   for (var i = 1; i < b.length; i++) {
     b[i] = (b[i] / N);
   }
-  b[0] = 0;
+  b[0] = 0; */
+
+  b = getFrequencies();
+  temp = getIntervals();
+  var l = temp[0].end - temp[0].start;
+  a.push(temp[0].start + l);
+
+  for (var i = 1; i < b.length; i++) {
+    a.push(a[i - 1] + l);
+  }
+
+  var sum = 0;
+  for (var i = 0; i < b.length; i++) {
+    sum += b[i];
+  }
+
+  for (var i = 0; i < b.length; i++) {
+    b[i] /= sum;
+  }
+
+  for (var i = 1; i < b.length; i++) {
+    b[i] += b[i - 1];
+  }
   const data = [];
   for (var i = 0; i < a.length; i++) {
     data.push([a[i], b[i]]);
   }
+ // console.table(data);
   return data;
 }
 
@@ -423,6 +478,13 @@ google.charts.setOnLoadCallback(drawCumRelative);
 google.charts.setOnLoadCallback(drawEmpiric);
 
 function drawPoligon() {
+  const vticks = getFrequencies();
+  const tempints = getIntervals();
+  var l = tempints[0].end - tempints[0].start;
+  for(var i = 0; i < vticks.length; i++) {
+    vticks[i] /= l;
+  }
+/*   console.table(vticks); */
   const prepdata = [];
   const newarr = getCountsArray();
   prepdata.push(['Element', 'Значення']);
@@ -430,22 +492,39 @@ function drawPoligon() {
   var data = google.visualization.arrayToDataTable(prepdata);  //get new data
 
   var options = {
-    title: 'Полігон частот',
+    title: 'Гістограма частот',
     curveType: 'line',
     legend: { position: 'right' },
-    pointSize: 4,
+    pointSize: 0,
     vAxis: {
+      ticks: vticks,
       viewWindow: {
         min: 0
       }
     }
   };
-  var chart = new google.visualization.LineChart(document.getElementById('Poligon'));
+  var chart = new google.visualization.AreaChart(document.getElementById('Poligon'));
 
   chart.draw(data, options);
 }
 
 function drawPolRelative() {
+  const vticks = getFrequencies();
+  const tempints = getIntervals();
+  var l = tempints[0].end - tempints[0].start;
+
+  var sum = 0;
+  vticks.forEach(element => {
+    sum += element;
+  });
+
+  for(var i = 0; i < vticks.length; i++) {
+    vticks[i] /= l;
+    vticks[i] /= sum;
+  }
+
+  
+
   const prepdata = [];
   const newarr = getCountsArrayRelative();
   prepdata.push(['Element', 'Значення']);
@@ -453,16 +532,17 @@ function drawPolRelative() {
   var data = google.visualization.arrayToDataTable(prepdata);  //get new data
 
   var options = {
-    title: 'Полігон відносних частот',
+    title: 'Гістограма відносних частот',
     curveType: 'line',
-    pointSize: 4,
+    pointSize: 0,
     vAxis: {
+      ticks: vticks,
       viewWindow: {
         min: 0
       }
     }
   };
-  var chart = new google.visualization.LineChart(document.getElementById('Poligon_relative'));
+  var chart = new google.visualization.AreaChart(document.getElementById('Poligon_relative'));
 
   chart.draw(data, options);
 }
@@ -482,6 +562,9 @@ function drawCum() {
       viewWindow: {
         min: 0
       }
+    },
+    hAxis: {
+      ticks: [0].concat(getMiddles())
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Cumulative_basic'));
@@ -504,6 +587,9 @@ function drawCumRelative() {
       viewWindow: {
         min: 0
       }
+    },
+    hAxis: {
+      ticks: [0].concat(getMiddles())
     }
   };
   var chart = new google.visualization.LineChart(document.getElementById('Cumulative_relative'));
