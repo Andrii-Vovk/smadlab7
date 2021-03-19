@@ -79,3 +79,8 @@ table.table-bordered > tbody > tr > td{
   border: 1px solid #3b3d44c7;
   border-radius: 5px;
 }
+
+.greentext {
+  color: #33d459;
+  font-weight: bold;
+}
