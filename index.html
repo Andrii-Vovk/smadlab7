@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Лабораторна 4</title>
+  <title>Лабораторна 5</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
@@ -12,22 +12,33 @@
 
 <body>
   <header id="headerblock">
-    <h1>Лабораторна 4</h1>
+    <h1>Лабораторна 5</h1>
   </header>
 
   <div class="xtable table-responsive">
     <h3 class="maintext">Дискретний статистичний ряд:</h3>
     <table contenteditable="true" id="dataTable" class="table table-bordered table-dark">
       <tr>
+        <td></td>
         <td>1</td>
-        <td>0.35</td>
-        <td>0.35</td>
-        <td>0.30</td>
-        <td>0.36</td>
-        <td>0.31</td>
-        <td>0.36</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>0.65</td>
+        <td>0.79</td>
+        <td>0.57</td>
         <td>0.34</td>
-        <td>0.34</td>
+        <td>0.25</td>
+        <td>0.00</td>
+        <td>0.43</td>
+        <td>0.40</td>
       </tr>
       <tr>
         <td>2</td>
@@ -53,14 +64,14 @@
       </tr>
       <tr>
         <td>4</td>
-        <td>0.32</td>
-        <td>0.36</td>
-        <td>0.37</td>
-        <td>0.37</td>
-        <td>0.37</td>
-        <td>0.30</td>
+        <td>0.35</td>
         <td>0.38</td>
         <td>0.42</td>
+        <td>0.47</td>
+        <td>0.60</td>
+        <td>0.91</td>
+        <td>0.89</td>
+        <td>0.59</td>
       </tr>
     </table>
   </div>
@@ -85,25 +96,36 @@
     <span class="maintext"> α = <input type="number" value="0.001" id="alpha"></span>
   </div>
 
-  <div class="maintext emp">
+  <div class="maintext emp" style="padding: 3px;">
     <span>Загальне середнє: </span><span id="avgtotalspan"></span>
     <br>
     <span class="greentext">Q: </span><span id="Qspan"></span>
     <span class="greentext">Q1: </span><span id="Q1span"></span>
     <span class="greentext">Q2: </span><span id="Q2span"></span>
+    <span class="greentext">Q2: </span><span id="Q3span"></span>
     <br>
     <span class="greentext">Оцінка загальної дисперсії: </span><span id="S2span"></span>
     <br>
-    <span class="greentext">Оцінка міжгрупової дисперсії: </span><span id="S21span"></span>
+    <span class="greentext">Оцінка дисперсії за фактором 1: </span><span id="S21span"></span>
     <br>
-    <span class="greentext">Оцінка залишкової дисперсії: </span><span id="S22span"></span>
+    <span class="greentext">Оцінка дисперсії за фактором 2: </span><span id="S22span"></span>
     <br>
-    <span class="greentext">Статистичне значення критерія Фішера-Снедекора: </span><span id="Fidgerspan"></span>
+    <span class="greentext">Оцінка залишкової дисперсії: </span><span id="S23span"></span>
     <br>
-    <span class="greentext">Теоретичне значення критерія Фішера-Снедекора: </span><span id="FidgerTspan"></span>
+    <span class="greentext">Статистичне значення критерія Фішера-Снедекора для 1 фактора: </span><span id="Fidgerspan1"></span>
+    <br>
+    <span class="greentext">Теоретичне значення критерія Фішера-Снедекора для 1 фактора: </span><span id="FidgerTspan1"></span>
+    <br>
+    <span class="greentext">Статистичне значення критерія Фішера-Снедекора для 2 фактора: </span><span id="Fidgerspan2"></span>
+    <br>
+    <span class="greentext">Теоретичне значення критерія Фішера-Снедекора для 2 фактора: </span><span id="FidgerTspan2"></span>
   </div>
-  <div class="maintext emp" style="font-size: larger;">
-    <span>Висновок: </span><span id="conclusion"></span>
+  <div class="maintext emp" style="font-size: larger; padding: 3px; margin-bottom: 6px;">
+    <span>Висновок: </span> 
+    <br>
+    <span id="conclusion1"></span>
+    <br>
+    <span id="conclusion2"></span>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
