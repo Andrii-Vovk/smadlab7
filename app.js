@@ -1,16 +1,15 @@
 const removecolbtn = document.getElementById('removecolbtn');
-const removerowbtn = document.getElementById('removerowbtn');
-const addcolbtn = document.getElementById('addcolbtn');
-const addrowbtn = document.getElementById('addrowbtn');
+const addcolbtn = document.getElementById('addcolbtn');;
 const donebtn = document.getElementById('donebtn');
-
 const table = document.getElementById('dataTable');
+
+const simpleAdder = (accumulator, currentValue) => accumulator + currentValue;
+const powerAdder = (accumulator, currentValue) => accumulator + (currentValue ** 2);
 
 function addCell() {
   for (var i = 0; i < table.rows.length; i++) {
     table.rows[i].insertCell(-1);
   }
-  table.rows[0].cells[table.rows[0].cells.length - 1].innerHTML = table.rows[0].cells.length - 1;
 }
 
 function deleteCell() {
@@ -19,177 +18,196 @@ function deleteCell() {
   }
 }
 
-function addRow() {
-  // alert(table.rows.length);
-  var newRow = table.insertRow(-1);
-  for (var i = 0; i < table.rows[0].cells.length; i++) {
-    newRow.insertCell(-1);
+function read(rowid) {
+  let arr = [];
+  let row = table.rows[rowid];
+  for (var j = 1, col; col = row.cells[j]; j++) {
+    arr.push(parseFloat(row.cells[j].innerHTML))
   }
-  table.rows[table.rows.length - 1].cells[0].innerHTML = table.rows.length - 1;
+  return arr;
 }
 
-function deleteRow() {
-  table.deleteRow(table.rows.length - 1);
+function calculateDelta(arr) {
+  return arr.length * arr.reduce(powerAdder) - (arr.reduce(simpleAdder)) ** 2;
 }
 
-function read() {
-  let data = [];
-  let tmparr = [];
-  for (var i = 1; i < table.rows.length; i++) {
-    for (var j = 1; j < table.rows[i].cells.length; j++) {
-      tmparr.push(parseFloat(table.rows[i].cells[j].innerHTML));
+function multSum(x, y) {
+  let result = 0;
+  for (var i = 0; i < x.length; i++) {
+    result += x[i] * y[i];
+  }
+  return result;
+}
+
+function calculateDeltaAlpha(x, y) {
+  return x.reduce(powerAdder) * y.reduce(simpleAdder) - x.reduce(simpleAdder) * multSum(x, y);
+}
+
+function calculateDeltaBeta(x, y) {
+  return x.length * multSum(x, y) - x.reduce(simpleAdder) * y.reduce(simpleAdder);
+}
+
+function getAlpha(x, y) {
+  return calculateDeltaAlpha(x, y) / calculateDelta(x);
+}
+
+function getBeta(x, y) {
+  return calculateDeltaBeta(x, y) / calculateDelta(x);
+}
+
+function plot(x, y, f1, f2, alpha, beta, alpha2, beta2) {
+  var layout = {
+    title: {
+      text: 'Метод наймешних квадратів',
+      font: {
+        family: 'Helvetica Neue',
+        size: 24
+      },
+      xref: 'paper',
+      x: 0.05,
     }
-    data.push(tmparr);
-    tmparr = [];
+  };
+
+  var trace1 = {
+    x: x,
+    y: y,
+    mode: 'markers',
+    type: 'scatter',
+    name: 'Вхідні дані'
+  };
+
+  var trace2 = {
+    x: [0, 2],
+    y: [alpha, beta * 2 + alpha],
+    mode: 'lines',
+    type: 'scatter',
+    name: "y=" + f1
+  };
+
+  var trace3 = {
+    x: [alpha2, beta2 * 2 + alpha2],
+    y: [0, 2],
+    mode: 'lines',
+    type: 'scatter',
+    name: "x=" + f2
+  };
+
+  var data = [trace1, trace2, trace3];
+  Plotly.newPlot('plot1', data, layout);
+}
+
+function averageSquare(x) {
+  return Math.sqrt(x.reduce(powerAdder) / x.length - (x.reduce(simpleAdder) / x.length) ** 2);
+}
+
+function Covariance(x, y) {
+  let res = 0;
+  for (let i = 0; i < x.length; i++) {
+    res += ((x[i] - x.reduce(simpleAdder) / x.length) * (y[i] - y.reduce(simpleAdder) / y.length));
   }
-  return data;
+  return res / x.length;
 }
 
-console.table(read());
+function rxy(x, y){
+  return Covariance(x, y)/(averageSquare(x)*averageSquare(y));
+ } 
 
-function averagerow(id) {
-  let arr = read();
-  let avg = 0;
-  for (var i = 0; i < arr[id].length; i++) {
-    avg += arr[id][i];
-  }
-  avg = avg / arr[id].length;
-  return avg;
-}
-
-function averagecol(id) {
-  let arr = read();
-  let avg = 0;
-  for (var i = 0; i < arr.length; i++) {
-    avg += arr[i][id];
-  }
-  avg = avg / arr.length;
-  return avg;
-}
-
-function averagetotal() {
-  let arr = read();
-  let avg = 0;
-  for (var i = 0; i < arr.length; i++) {
-    avg += averagerow(i);
-  }
-  avg = avg / arr.length;
-  return avg;
-}
-
-
-function Q() {
-  return Q1() + Q2() + Q3();
-}
-
-function Q1() {
-  let arr = read();;
-  let add2 = 0;
-
-
-  for (var i = 0; i < arr.length; i++) {
-    add2 += (averagerow(i) - averagetotal()) ** 2;
-  }
-
-  return add2 * arr[0].length;
-}
-
-function Q2() {
-  let arr = read();
-  let add1 = 0;
-
-  for (var i = 0; i < arr[0].length; i++) {
-    add1 += (averagecol(i) - averagetotal()) ** 2;
-  }
-
-  return arr.length * add1;
-}
-
-function Q3() {
-  let arr = read();
-  let add3 = 0;
-
-  for (var i = 0; i < arr.length; i++) {
-    for (var j = 0; j < arr[i].length; j++) {
-      add3 += (arr[i][j] - averagerow(i) - averagecol(j) + averagetotal()) ** 2
+function plot2(x, y, f1, f2, rxiy, ryix, avgx, avgy) {
+  var layout = {
+    title: {
+      text: 'Із використанням статистичного коефіцієнта <br>кореляції',
+      font: {
+        family: 'Helvetica Neue',
+        size: 24
+      },
+      xref: 'paper',
+      x: 0.05,
     }
-  }
-  return add3;
+  };
+
+  var trace1 = {
+    x: x,
+    y: y,
+    mode: 'markers',
+    type: 'scatter',
+    name: 'Вхідні дані'
+  };
+
+  var trace2 = {
+    x: [0, 2],
+    y: [avgy + ryix * (0 - avgx), avgy + ryix * (2 - avgx)],
+    mode: 'lines',
+    type: 'scatter',
+    name: "y=" + f1
+  };
+  var trace3 = {
+    x: [avgx + rxiy * (0 - avgy), avgx + rxiy * (2 - avgy)],
+    y: [0, 2],
+    mode: 'lines',
+    type: 'scatter',
+    name: "x=" + f2
+  };
+
+  var data = [trace1, trace2, trace3];
+
+  Plotly.newPlot('plot2', data, layout);
 }
 
-function S2() {
-  let arr = read();
-  return (Q() / (arr.length * arr[0].length - 1));
+function createPlot1() {
+  var x = read(0);
+  var y = read(1);
+
+  document.getElementById("delta").innerHTML = calculateDelta(x).toFixed(5);
+  document.getElementById("deltaTick").innerHTML = calculateDelta(y).toFixed(5);
+  document.getElementById("deltaAlpha").innerHTML = calculateDeltaAlpha(x, y).toFixed(5);
+  document.getElementById("deltaBeta").innerHTML = calculateDeltaBeta(x, y).toFixed(5);
+  document.getElementById("deltaAlphaTick").innerHTML = calculateDeltaAlpha(y, x).toFixed(5);
+  document.getElementById("deltaBetaTick").innerHTML = calculateDeltaBeta(y, x).toFixed(5);
+  document.getElementById("alpha").innerHTML = getAlpha(x, y).toFixed(5);
+  document.getElementById("beta").innerHTML = getBeta(x, y).toFixed(5);
+  document.getElementById("alphaTick").innerHTML = getAlpha(y, x).toFixed(5);
+  document.getElementById("betaTick").innerHTML = getBeta(y, x).toFixed(5);
+  document.getElementById("eq1").innerHTML = "" + getAlpha(x, y).toFixed(3) + (getBeta(x, y) < 0 ? "" : "+") + getBeta(x, y).toFixed(3) + "x<sup>*</sup>";
+  document.getElementById("eq2").innerHTML = "" + getAlpha(y, x).toFixed(3) + (getBeta(y, x) < 0 ? "" : "+") + getBeta(y, x).toFixed(3) + "y<sup>*</sup>";
+
+  let yNaX = getAlpha(x, y).toFixed(3) + (getBeta(x, y) < 0 ? "" : "+") + getBeta(x, y).toFixed(3) + "x<sup>*</sup>";
+  let xNaY = getAlpha(y, x).toFixed(3) + (getBeta(y, x) < 0 ? "" : "+") + getBeta(y, x).toFixed(3) + "y<sup>*</sup>";
+  plot(x, y, yNaX, xNaY, getAlpha(x, y), getBeta(x, y), getAlpha(y, x), getBeta(y, x));
+
 }
 
-function S21() {
-  let arr = read();
-  return (Q1() / (arr.length - 1));
-}
+function createPlot2() {
+  var x = read(0);
+  var y = read(1);
 
-function S22() {
-  let arr = read();
-  return (Q2() / (arr[0].length - 1));
-}
+  const avgy = y.reduce(simpleAdder) / y.length;
+  const avgx = x.reduce(simpleAdder) / x.length;
+  const rxiy = rxy(x, y) * (averageSquare(x) / averageSquare(y));
+  const ryix = rxy(x, y) * (averageSquare(y) / averageSquare(x));
+  document.getElementById("rxy").innerHTML = rxy(x, y);
+  document.getElementById("xaverage").innerHTML = avgx.toFixed(5);
+  document.getElementById("yaverage").innerHTML = avgy.toFixed(5);
+  document.getElementById("s0x").innerHTML = averageSquare(x).toFixed(5);
+  document.getElementById("s0y").innerHTML = averageSquare(y).toFixed(5);
+  document.getElementById("rxIy").innerHTML = rxiy.toFixed(5);
+  document.getElementById("ryIx").innerHTML = ryix.toFixed(5);
+  document.getElementById("seq1").innerHTML = "-" + avgx.toFixed(3) + " = " + rxiy.toFixed(3) + "(y * -" + avgy.toFixed(2) + ")";
+  document.getElementById("seq2").innerHTML = "-" + avgy.toFixed(3) + " = " + ryix.toFixed(3) + "(x * -" + avgx.toFixed(2) + ")";
+  const sxnay = avgx.toFixed(3) + "+" + rxiy.toFixed(3) + "(y<sup>*</sup>-" + avgy.toFixed(2) + ") ";
+  const synax = avgy.toFixed(3) + "+" + ryix.toFixed(3) + "(x<sup>*</sup>-" + avgx.toFixed(2) + ") ";
 
-function S23() {
-  let arr = read();
-  return Q3() / ((arr.length - 1) * (arr[0].length - 1));
-}
-
-function fidgerFact1() {
-  return S21() / S23();
-}
-
-function fidgerFact2() {
-  return S22() / S23();
-}
-
-function fidgerTheoreticalFact1() {
-  let arr = read();
-  return jStat.centralF.inv(1 - parseFloat(document.getElementById('alpha').value), (arr.length - 1), ((arr.length - 1) * (arr[0].length - 1)));
-}
-
-function fidgerTheoreticalFact2() {
-  let arr = read();
-  return jStat.centralF.inv(1 - parseFloat(document.getElementById('alpha').value), (arr[0].length - 1), ((arr.length - 1) * (arr[0].length - 1)));
+  plot2(x, y, synax, sxnay, rxiy, ryix, avgx, avgy);
 }
 
 function setLabels() {
-  document.getElementById('avgtotalspan').innerHTML = averagetotal();
-  document.getElementById('Qspan').innerHTML = Q();
-  document.getElementById('Q1span').innerHTML = Q1();
-  document.getElementById('Q2span').innerHTML = Q2();
-  document.getElementById('Q3span').innerHTML = Q3();
-  document.getElementById('S2span').innerHTML = S2();
-  document.getElementById('S21span').innerHTML = S21();
-  document.getElementById('S22span').innerHTML = S22();
-  document.getElementById('S23span').innerHTML = S23();
-  document.getElementById('Fidgerspan1').innerHTML = fidgerFact1();
-  document.getElementById('FidgerTspan1').innerHTML = fidgerTheoreticalFact1();
-  document.getElementById('Fidgerspan2').innerHTML = fidgerFact2();
-  document.getElementById('FidgerTspan2').innerHTML = fidgerTheoreticalFact2();
-  if (fidgerFact1() < fidgerTheoreticalFact1()) {
-    document.getElementById('conclusion1').innerHTML = "F* < F, фактор #1 не впливає на результати вимірювань і ним можна знехтувати."
-  }
-  else {
-    document.getElementById('conclusion1').innerHTML = "F* > F, фактор #1 фактор впливає на результати вимірювань і ним можна знехтувати."
-  }
-
-  if (fidgerFact2() < fidgerTheoreticalFact2()) {
-    document.getElementById('conclusion2').innerHTML = "F* < F, фактор #2 не впливає на результати вимірювань і ним можна знехтувати."
-  }
-  else {
-    document.getElementById('conclusion2').innerHTML = "F* > F, фактор #2 фактор впливає на результати вимірювань і ним можна знехтувати."
-  }
+  createPlot1();
+  createPlot2();
 }
 
 
 function main() {
   addcolbtn.addEventListener('click', () => addCell());
-  addrowbtn.addEventListener('click', () => addRow());
   removecolbtn.addEventListener('click', () => deleteCell());
-  removerowbtn.addEventListener('click', () => deleteRow());
   donebtn.addEventListener('click', () => setLabels());
 }
 
